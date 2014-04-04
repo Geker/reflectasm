@@ -14,6 +14,9 @@
 
 package com.esotericsoftware.reflectasm;
 
-public abstract class PublicConstructorAccess extends ConstructorAccess {
+public  class PublicConstructorAccess extends ConstructorAccess {
 
+    protected PublicConstructorAccess(ClassAccess classAccess) {
+        super(classAccess);
+    }
 }
