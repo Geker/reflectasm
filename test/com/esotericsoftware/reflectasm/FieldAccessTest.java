@@ -31,7 +31,39 @@ public class FieldAccessTest extends TestCase {
 		assertEquals(1234, test.intValue);
 		assertEquals(1234, access.get(test, "intValue"));
 	}
+	public void testPrivateNameSetAndGet () {
+		FieldAccess access = FieldAccess.get(SomeClass.class);
+		SomeClass test = new SomeClass();
+		assertEquals(null, test.privateField);
+		access.set(test, "privateField", "priValue");
+		assertEquals("priValue", test.privateField);
+		assertEquals("priValue", access.get(test, "privateField"));
 
+		//assertEquals(null, test.privateStaticField);
+		access.set(test, "privateStaticField", "priStaticValue");
+		assertEquals("priStaticValue", test.privateStaticField);
+		assertEquals("priStaticValue", access.get(test, "privateStaticField"));
+
+	}
+
+
+	public void testPrivateIndexSetAndGet () {
+		FieldAccess access = FieldAccess.get(SomeClass.class);
+		SomeClass test = new SomeClass();
+
+		assertEquals(null, test.privateField);
+		int index;
+		index = access.getIndex("privateField");
+		access.set(test, index, "priValue");
+		assertEquals("priValue", test.privateField);
+		assertEquals("priValue", access.get(test, index));
+
+
+		index = access.getIndex("privateStaticField");
+		access.set(test, index, "priStaticValue");
+		assertEquals("priStaticValue", test.privateStaticField);
+		assertEquals("priStaticValue", access.get(test, index));
+	}
 	public void testIndexSetAndGet () {
 		FieldAccess access = FieldAccess.get(SomeClass.class);
 		SomeClass test = new SomeClass();
@@ -115,8 +147,8 @@ public class FieldAccessTest extends TestCase {
 		public int intValue;
 		protected float test1;
 		Float test2;
-		private String test3;
-
+		private String privateField;
+		private static String privateStaticField;
 		public boolean booleanField;
 		public byte byteField;
 		public char charField;
