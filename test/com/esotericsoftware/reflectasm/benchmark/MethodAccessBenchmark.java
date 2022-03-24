@@ -56,7 +56,7 @@ public class MethodAccessBenchmark extends Benchmark {
 	}
 
 	static public class SomeClass {
-		private String name = "something";
+		private final String name = "something";
 
 		public String getName () {
 			return name;

@@ -164,7 +164,7 @@ public class ClassAccess {
         mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
         mv.visitCode();
         mv.visitVarInsn(ALOAD, 0);
-        mv.visitMethodInsn(INVOKESPECIAL, baseName, "<init>", "()V");
+        mv.visitMethodInsn(INVOKESPECIAL, baseName, "<init>", "()V",false);
         mv.visitInsn(RETURN);
         mv.visitMaxs(0, 0);
         mv.visitEnd();
@@ -213,7 +213,7 @@ public class ClassAccess {
             mv.visitCode();
             mv.visitTypeInsn(NEW, classNameInternal);
             mv.visitInsn(DUP);
-            mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "()V");
+            mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "()V",false);
             mv.visitInsn(ARETURN);
             mv.visitMaxs(0, 0);
             mv.visitEnd();
@@ -261,7 +261,7 @@ public class ClassAccess {
                 buffer.setLength(0);
                 buffer.append('(');
 
-                Class[] paramTypes = info.constructorParameterTypes[i];
+                Class<?>[] paramTypes = info.constructorParameterTypes[i];
                 for (int paramIndex = 0; paramIndex < paramTypes.length; paramIndex++) {
                     mv.visitVarInsn(ALOAD, 2);
                     mv.visitIntInsn(BIPUSH, paramIndex);
@@ -271,7 +271,7 @@ public class ClassAccess {
                     buffer.append(paramType.getDescriptor());
                 }
                 buffer.append(")V");
-                mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", buffer.toString());
+                mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", buffer.toString(),false);
                 mv.visitInsn(ARETURN);
             }
             mv.visitLabel(defaultLabel);
@@ -282,11 +282,11 @@ public class ClassAccess {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitLdcInsn("Constructor not found: ");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitVarInsn(ILOAD, 1);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;",false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;",false);
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitInsn(ATHROW);
         mv.visitMaxs(0, 0);
         mv.visitEnd();
@@ -343,7 +343,7 @@ public class ClassAccess {
                 buffer.append(')');
                 buffer.append(Type.getDescriptor(returnType));
                 final int inv = isInterface ? INVOKEINTERFACE : (isStatic ? INVOKESTATIC : INVOKEVIRTUAL);
-                mv.visitMethodInsn(inv, classNameInternal, methodName, buffer.toString());
+                mv.visitMethodInsn(inv, classNameInternal, methodName, buffer.toString(),isInterface);
 
                 final Type retType = Type.getType(returnType);
                 box(mv, retType);
@@ -358,11 +358,11 @@ public class ClassAccess {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitLdcInsn("Method not found: ");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitVarInsn(ILOAD, 2);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;",false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;",false);
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitInsn(ATHROW);
         mv.visitMaxs(0, 0);
         mv.visitEnd();
@@ -563,11 +563,11 @@ public class ClassAccess {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitLdcInsn("Field not found: ");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitVarInsn(ILOAD, 2);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;",false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;",false);
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitInsn(ATHROW);
         return mv;
     }
@@ -578,11 +578,11 @@ public class ClassAccess {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitLdcInsn("Field not declared as " + fieldType + ": ");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitVarInsn(ILOAD, 2);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;",false);
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;",false);
+        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V",false);
         mv.visitInsn(ATHROW);
         return mv;
     }
@@ -593,28 +593,28 @@ public class ClassAccess {
                 mv.visitInsn(ACONST_NULL);
                 break;
             case Type.BOOLEAN:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;",false);
                 break;
             case Type.BYTE:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", "valueOf", "(B)Ljava/lang/Byte;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", "valueOf", "(B)Ljava/lang/Byte;",false);
                 break;
             case Type.CHAR:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", "valueOf", "(C)Ljava/lang/Character;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", "valueOf", "(C)Ljava/lang/Character;",false);
                 break;
             case Type.SHORT:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", "valueOf", "(S)Ljava/lang/Short;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", "valueOf", "(S)Ljava/lang/Short;",false);
                 break;
             case Type.INT:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;",false);
                 break;
             case Type.FLOAT:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", "valueOf", "(F)Ljava/lang/Float;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", "valueOf", "(F)Ljava/lang/Float;",false);
                 break;
             case Type.LONG:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;",false);
                 break;
             case Type.DOUBLE:
-                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;",false);
                 break;
         }
     }
@@ -623,35 +623,35 @@ public class ClassAccess {
         switch (type.getSort()) {
             case Type.BOOLEAN:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Boolean");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z",false);
                 break;
             case Type.BYTE:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "byteValue", "()B");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "byteValue", "()B",false);
                 break;
             case Type.CHAR:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Character");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Character", "charValue", "()C");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Character", "charValue", "()C",false);
                 break;
             case Type.SHORT:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "shortValue", "()S");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "shortValue", "()S",false);
                 break;
             case Type.INT:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "intValue", "()I");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "intValue", "()I",false);
                 break;
             case Type.FLOAT:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "floatValue", "()F");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "floatValue", "()F",false);
                 break;
             case Type.LONG:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "longValue", "()J");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "longValue", "()J",false);
                 break;
             case Type.DOUBLE:
                 mv.visitTypeInsn(CHECKCAST, "java/lang/Number");
-                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "doubleValue", "()D");
+                mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Number", "doubleValue", "()D",false);
                 break;
             case Type.ARRAY:
                 mv.visitTypeInsn(CHECKCAST, type.getDescriptor());
@@ -859,52 +859,52 @@ public class ClassAccess {
         return classAccessor.getFloat(instance, fieldIndex);
     }
 
-    public static interface ClassAccessor {
-        abstract public Object newInstance(int constructorIndex, Object... args);
+    public interface ClassAccessor {
+        Object newInstance(int constructorIndex, Object... args);
 
-        abstract public Object newInstance();
+        Object newInstance();
 
-        abstract public Object newObjectInstance();
+        Object newObjectInstance();
 
-        abstract public Object newInstance(Object instance, int constructorIndex, Object... args);
+        Object newInstance(Object instance, int constructorIndex, Object... args);
 
-        abstract public Object invoke(Object instance, int methodIndex, Object... args);
+        Object invoke(Object instance, int methodIndex, Object... args);
 
-        abstract public void set(Object instance, int fieldIndex, Object value);
+        void set(Object instance, int fieldIndex, Object value);
 
-        abstract public void setBoolean(Object instance, int fieldIndex, boolean value);
+        void setBoolean(Object instance, int fieldIndex, boolean value);
 
-        abstract public void setByte(Object instance, int fieldIndex, byte value);
+        void setByte(Object instance, int fieldIndex, byte value);
 
-        abstract public void setShort(Object instance, int fieldIndex, short value);
+        void setShort(Object instance, int fieldIndex, short value);
 
-        abstract public void setInt(Object instance, int fieldIndex, int value);
+        void setInt(Object instance, int fieldIndex, int value);
 
-        abstract public void setLong(Object instance, int fieldIndex, long value);
+        void setLong(Object instance, int fieldIndex, long value);
 
-        abstract public void setDouble(Object instance, int fieldIndex, double value);
+        void setDouble(Object instance, int fieldIndex, double value);
 
-        abstract public void setFloat(Object instance, int fieldIndex, float value);
+        void setFloat(Object instance, int fieldIndex, float value);
 
-        abstract public void setChar(Object instance, int fieldIndex, char value);
+        void setChar(Object instance, int fieldIndex, char value);
 
-        abstract public Object get(Object instance, int fieldIndex);
+        Object get(Object instance, int fieldIndex);
 
-        abstract public char getChar(Object instance, int fieldIndex);
+        char getChar(Object instance, int fieldIndex);
 
-        abstract public boolean getBoolean(Object instance, int fieldIndex);
+        boolean getBoolean(Object instance, int fieldIndex);
 
-        abstract public byte getByte(Object instance, int fieldIndex);
+        byte getByte(Object instance, int fieldIndex);
 
-        abstract public short getShort(Object instance, int fieldIndex);
+        short getShort(Object instance, int fieldIndex);
 
-        abstract public int getInt(Object instance, int fieldIndex);
+        int getInt(Object instance, int fieldIndex);
 
-        abstract public long getLong(Object instance, int fieldIndex);
+        long getLong(Object instance, int fieldIndex);
 
-        abstract public double getDouble(Object instance, int fieldIndex);
+        double getDouble(Object instance, int fieldIndex);
 
-        abstract public float getFloat(Object instance, int fieldIndex);
+        float getFloat(Object instance, int fieldIndex);
     }
 
     public static class UnsafeHolder {

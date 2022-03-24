@@ -4,9 +4,6 @@ package com.esotericsoftware.reflectasm;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 
 import junit.framework.TestCase;
 
